@@ -6,13 +6,16 @@ DESCRIPTION = "Ansible Api Warpper"
 AUTHOR = "loveshell"
 AUTHOR_EMAIL = "idweball@gmail.com"
 URL = "https://github.com/idweball/Asi"
-VERSION = "1.1.3"
+VERSION = "1.1.10"
+
+with open("README.md", "r") as f:
+	long_description = f.read()
 
 setup(
 	name=NAME,
 	version=VERSION,
 	description=DESCRIPTION,
-	long_description=open("README.md").read(),
+	long_description=long_description,
 	long_description_content_type="text/markdown",
 	author=AUTHOR,
 	author_email=AUTHOR_EMAIL,
