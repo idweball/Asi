@@ -14,6 +14,8 @@ import ansible.constants as C
 class Api(object):
 
 	def __init__(self):
+		# disable check the host key at ansible running
+		C.HOST_KEY_CHECKING = False
 		self._callback = None
 		self._loader = DataLoader()
 		self._inventory = InventoryManager(loader=self._loader, sources=",")
