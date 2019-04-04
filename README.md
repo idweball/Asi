@@ -38,3 +38,25 @@ if __name__ == "__main__":
 		 .module("debug", args={"msg":"{{shell_out.stdout}}"})\
 		 .run(hosts)	
 ```
+
+### 获取返回数据
+
+在`run`方法前面调用`json`方法，并且`run`方法中`callback`参数需为`None`
+
+```python
+from Asi import Api
+import json
+
+
+if __name__ == "__main__":
+	hosts = [
+		dict(hostname="127.0.0.1", port=22)
+	]
+
+	api = Api()
+	api = api.module("shell", args="ls", register="shell_out")
+	api = api.module("debug", args=dict(msg="{{shell_out}}"))
+	api = api.json()
+	print("result")
+	print(json.dumps(api.run(hosts), indent=4))
+```

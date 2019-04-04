@@ -5,6 +5,7 @@ from collections import namedtuple
 from ansible.parsing.dataloader import DataLoader
 from ansible.inventory.manager import InventoryManager
 from ansible.vars.manager import VariableManager
+from ansible.plugins.callback.json import CallbackModule as JsonCallBack
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 import ansible.constants as C
@@ -13,6 +14,7 @@ import ansible.constants as C
 class Api(object):
 
 	def __init__(self):
+		self._callback = None
 		self._loader = DataLoader()
 		self._inventory = InventoryManager(loader=self._loader)
 		self._variable_manager = VariableManager(loader=self._loader, inventory=self._inventory)
@@ -35,7 +37,11 @@ class Api(object):
 
 	def _set_variable(self, host, varname, value):
 		self._variable_manager.set_host_variable(host, varname, value)
-		
+	
+	def json(self):
+		self._callback = JsonCallBack()
+		return self
+
 	def module(self, module, task_name=None, args=None, **kwargs):
 		'''
 		Args:
@@ -93,6 +99,8 @@ class Api(object):
 			check=kwargs.get("check", False),
 			diff=kwargs.get("diff", False)
 		)
+		if self._callback is None:
+			self._callback = callback
 		self._parse_host(hosts)
 		
 		play_source = dict(
@@ -112,11 +120,12 @@ class Api(object):
 				loader=self._loader,
 				options=options,
 				passwords=password,
-				stdout_callback=callback
+				stdout_callback=self._callback
 			)
 			tqm.run(play)
 		finally:
 			if tqm is not None:
 				tqm.cleanup()
 			shutil.rmtree(C.DEFAULT_LOCAL_TMP, True)
-
+		results = getattr(self._callback, "results", None)
+		return results
