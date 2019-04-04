@@ -2,10 +2,10 @@
 #-*- coding:utf8 -*-
 import shutil
 from collections import namedtuple
+from Asi.callback import CallbackModule as JsonCallBack
 from ansible.parsing.dataloader import DataLoader
 from ansible.inventory.manager import InventoryManager
 from ansible.vars.manager import VariableManager
-from ansible.plugins.callback.json import CallbackModule as JsonCallBack
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 import ansible.constants as C
