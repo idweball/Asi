@@ -1,10 +1,14 @@
+### 说明
+
+这是一个Ansible Python Api的封装。
+
 ### 安装
 
 ```bash
 $ python setup.py install
 ```
 
-### 使用
+### 简单使用
 
 ```python
 from Asi import Api
