@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
 ### 获取返回数据
 
-在`run`方法前面调用`json`方法，并且`run`方法中`callback`参数需为`None`
+在`run`方法前面调用`json`方法，并且`run`方法中`callback`参数需为`None`，如果自己实现`callback`, 则需要在`callback`增添属性`results`
 
 ```python
 from Asi import Api
