@@ -61,7 +61,7 @@ class Api(object):
 			self._tasks.append(dict(action=dict(module=module), name=task_name, **kwargs))
 		return self
 	
-	def run(self, hosts, play_name="Ansible Play", gather_facts="no", system_warnings=False,callback=None, **kwargs):
+	def run(self, hosts, play_name="Ansible Play", gather_facts="no", callback=None, **kwargs):
 		'''
 		Args:
 			hosts: list, example:
@@ -78,7 +78,6 @@ class Api(object):
 			gather_facts: string, no/yes; 是否在运行任务前使用steup模块收集主机信息
 			callback: object, Ansible CallbackBase实现 
 			kwargs: dict, 选项参数
-			system_warnings: bool, 是否输出告警信息
 		'''
 		Options = namedtuple("Options",[
 			"connection",
@@ -103,7 +102,6 @@ class Api(object):
 		if self._callback is None:
 			self._callback = callback
 
-		C.set_constant("localhost_warning", False)
 		self._parse_host(hosts)
 		
 		play_source = dict(
