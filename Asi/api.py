@@ -16,7 +16,7 @@ class Api(object):
 	def __init__(self):
 		self._callback = None
 		self._loader = DataLoader()
-		self._inventory = InventoryManager(loader=self._loader)
+		self._inventory = InventoryManager(loader=self._loader, sources=",")
 		self._variable_manager = VariableManager(loader=self._loader, inventory=self._inventory)
 		self._tasks = []
 
@@ -61,7 +61,7 @@ class Api(object):
 			self._tasks.append(dict(action=dict(module=module), name=task_name, **kwargs))
 		return self
 	
-	def run(self, hosts, play_name="Ansible Play", gather_facts="no", password=dict(),callback=None, **kwargs):
+	def run(self, hosts, play_name="Ansible Play", gather_facts="no", system_warnings=False,callback=None, **kwargs):
 		'''
 		Args:
 			hosts: list, example:
@@ -78,6 +78,7 @@ class Api(object):
 			gather_facts: string, no/yes; 是否在运行任务前使用steup模块收集主机信息
 			callback: object, Ansible CallbackBase实现 
 			kwargs: dict, 选项参数
+			system_warnings: bool, 是否输出告警信息
 		'''
 		Options = namedtuple("Options",[
 			"connection",
@@ -101,6 +102,8 @@ class Api(object):
 		)
 		if self._callback is None:
 			self._callback = callback
+
+		C.set_constant("localhost_warning", False)
 		self._parse_host(hosts)
 		
 		play_source = dict(
@@ -119,7 +122,7 @@ class Api(object):
 				variable_manager=self._variable_manager,
 				loader=self._loader,
 				options=options,
-				passwords=password,
+				passwords=dict(),
 				stdout_callback=self._callback
 			)
 			tqm.run(play)
