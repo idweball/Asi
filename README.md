@@ -60,3 +60,35 @@ if __name__ == "__main__":
 	print("result")
 	print(json.dumps(api.run(hosts), indent=4))
 ```
+
+### 获取主机监听的TCP端口
+
+```python
+#!/usr/bin/python
+
+from Asi import Api
+import sys
+
+
+if __name__ == "__main__":
+	hosts = [
+		dict(hostname="127.0.0.1"),
+	]
+	
+	api = Api()
+	api = api.module("shell", args="""netstat -tunlp | awk -F "[ :]+" '/^tcp/&&/0.0.0.0/{print$5}'""")
+	api = api.json()
+	results = api.run(hosts)
+	
+	for task in results[0]["tasks"]:
+		hosts = task["hosts"]
+		for host, value in hosts.items():
+			host_result = hosts[host]
+			sys.stdout.write("hostname: {} ".format(host))
+			if host_result.get("unreachable", False):
+				print("error: {}".format(host_result["msg"]))
+			elif host_result["rc"] == 0:
+				print("listen ports: {}".format(",".join(host_result["stdout_lines"])))
+			else:
+				print("error: {}".format(host_result["stderr"]))
+```
