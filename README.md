@@ -1,6 +1,13 @@
 ### 说明
 
-这是一个Ansible Python Api的封装。
+这是一个Ansible Python Api的封装。it is so easy!
+
+特性:
+
+1. 自定义模块，以及Ansible内置模块
+2. 自定义回调插件以及Ansible内置回调插件
+3. 组织小型Ansible Play
+4. 执行结果可以使用Json格式数据返回
 
 ### 安装
 
