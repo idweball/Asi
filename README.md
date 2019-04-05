@@ -100,3 +100,21 @@ if __name__ == "__main__":
 			else:
 				print("error: {}".format(host_result["stderr"]))
 ```
+
+### 文件分发
+
+```python
+#!/usr/bin/python
+
+from Asi import Api
+
+
+if __name__ == "__main__":
+	hosts = [
+		dict(hostname="127.0.0.1"),
+	]
+	
+	api = Api()
+	api = api.module("copy", args=dict(src="./hostname.py", dest="/usr/local"))
+	api.run(hosts)
+```
