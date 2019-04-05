@@ -5,7 +5,15 @@
 ### 安装
 
 ```bash
+$ git clone https://github.com/idweball/Asi.git
+$ cd Asi
 $ python setup.py install
+```
+
+**OR**
+
+```bash
+$ pip install -U Asi
 ```
 
 ### 简单使用
